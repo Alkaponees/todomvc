@@ -13,14 +13,17 @@ pipeline {
     }
         }
     stages {
+        stage('Uninstall dependencies'){
+            steps{
+                sh 'npm uninstall --save $(ls -1 node_modules | tr "\\n" " ")'
+            }
+        }
         stage ('Install dependencies'){
             
         steps {
                 sh 'apt-get update && apt-get install -y wget gnupg ca-certificates git xvfb'
-                // Cache the .cache/Cypress directory
-                cache(path: '.cache/Cypress', key: 'cypress-cache')
+                
                 sh 'npm install'
-                stash includes: 'node_modules', name: 'node-modules'
               
             }
         }
