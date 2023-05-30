@@ -3,12 +3,12 @@ pipeline {
     GITHUB_TOKEN=credentials('github-token')
     IMAGE_NAME='alkaponees/todomvc'
     IMAGE_VERSION='v1'
-    HOME = '.'
+    HOME='.'
   }
    agent {
     docker {
         image 'node:14'
-        args '-p 3000:8080'
+        args '-p 3000:8080 -u root'
         
     }
         }
