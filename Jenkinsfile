@@ -13,16 +13,11 @@ pipeline {
     }
         }
     stages {
-        stage('Uninstall dependencies'){
-            steps{
-                sh 'npm uninstall --save $(ls -1 node_modules | tr "\\n" " ")'
-            }
-        }
         stage ('Install dependencies'){
             
         steps {
                 sh 'apt-get update && apt-get install -y wget gnupg ca-certificates git xvfb'
-                
+                sh 'npm cache clean --force'
                 sh 'npm install'
               
             }
