@@ -3,11 +3,10 @@ pipeline {
     GITHUB_TOKEN=credentials('github-token')
     IMAGE_NAME='ghcr.io/alkaponees/todomvc'
     IMAGE_VERSION='v1'
-    HOME='.'
   }
    agent {
     docker {
-        image 'node:14'
+        image 'node:14-alpine'
         args '-u root'
         
     }
@@ -16,7 +15,6 @@ pipeline {
         stage ('Install dependencies'){
             
         steps {
-                sh 'apt-get update && apt-get install -y wget gnupg ca-certificates git xvfb'
                 sh 'npm cache clean --force'
                 sh 'npm install'
                 sh 'npm install cypress'
