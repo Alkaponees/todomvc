@@ -15,6 +15,8 @@ pipeline {
         stage ('Install dependencies'){
             
         steps {
+                sh 'apk update'
+                sh 'apk add xvfb'
                 sh 'npm cache clean --force'
                 sh 'npm install'
                 sh 'npm install cypress'
