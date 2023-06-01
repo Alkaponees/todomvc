@@ -8,11 +8,10 @@ pipeline {
     stages {
         stage ('Work with Docker agent on node image'){
             agent {
-    docker {
-        image 'node:14-alpine'
-        args '-u root'
-        reuseNode true
-    }
+            docker {
+                image 'node:14-alpine'
+                args '-u root'
+            }
         }
         stages{
             stage('Install apk dependencies'){
@@ -44,6 +43,8 @@ pipeline {
         }
         
         }
+    }
+}
         
        
     //     stage ('Create docker conatiner')
