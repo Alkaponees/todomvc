@@ -1,9 +1,9 @@
 pipeline {
-    environment {
-    GITHUB_TOKEN=credentials('github-token')
-    IMAGE_NAME='ghcr.io/alkaponees/todomvc'
-    IMAGE_VERSION='v1'
-  }
+//     environment {
+//     GITHUB_TOKEN=credentials('github-token')
+//     IMAGE_NAME='ghcr.io/alkaponees/todomvc'
+//     IMAGE_VERSION='v1'
+//   }
    agent any
     stages {
         stage('Work with Docker agent on node image'){
