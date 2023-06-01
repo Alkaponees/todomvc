@@ -53,6 +53,12 @@ pipeline {
     && apt-get install -y google-chrome-stable'
                 }
             }
+            stage ('Run')
+            {
+                steps{
+                    sh 'npm run start&'
+                }
+            }
         stage ('Test')
         {
             steps{
