@@ -9,17 +9,14 @@ pipeline {
         stage('Work with Docker agent on node image'){
             agent {
             docker {
-                image 'ubuntu:latest'
+                image 'node:14'
                 args '-u root'
             }
         }
         stages{
             stage('Install dependencies'){
                 steps {
-                sh 'apt-get update && apt-get install -y wget gnupg  git curl dirmngr apt-transport-https lsb-release ca-certificates netcat-openbsd net-tools iftop iproute2 iputils-ping dnsutils traceroute'
-                sh 'curl -sL https://deb.nodesource.com/setup_14.x | bash -'
-                sh 'apt-get install nodejs'
-                sh 'node -v && npm -v'
+                sh 'apt-get update && apt-get install -y wget gnupg ca-certificates git'
                 sh 'apt-get update && apt-get install -y \
                     libgtk2.0-0 \
                     libgtk-3-0 \
