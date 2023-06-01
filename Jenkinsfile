@@ -16,8 +16,7 @@ pipeline {
         stages{
             stage('Install dependencies'){
                 steps {
-                sh 'apt-get update && apt-get install -y wget gnupg  git curl dirmngr apt-transport-https lsb-release ca-certificates netcat-openbsd net-tools iftop iproute2 iputils-ping dnsutils traceroute
-'
+                sh 'apt-get update && apt-get install -y wget gnupg  git curl dirmngr apt-transport-https lsb-release ca-certificates netcat-openbsd net-tools iftop iproute2 iputils-ping dnsutils traceroute'
                 sh 'curl -sL https://deb.nodesource.com/setup_14.x | bash -'
                 sh 'apt-get install nodejs'
                 sh 'node -v && npm -v'
