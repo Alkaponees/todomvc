@@ -9,7 +9,7 @@ pipeline {
         stage('Work with Docker agent on node image'){
             agent {
             docker {
-                image 'ubuntu-latest'
+                image 'ubuntu:latest'
                 args '-u root'
             }
         }
