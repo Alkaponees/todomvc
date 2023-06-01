@@ -6,7 +6,7 @@ pipeline {
   }
    agent any
     stages {
-        stage ('Work with Docker agent on node image'){
+        stage('Work with Docker agent on node image'){
             agent {
             docker {
                 image 'node:14-alpine'
@@ -21,13 +21,11 @@ pipeline {
               
             }
             }
-            stage ('Install npm')
-        {
-            steps{
-                sh 'npm install'
-                sh 'npm install cypress'
-    
-            }
+            stage('Install npm'){
+                steps{
+                    sh 'npm install'
+                    sh 'npm install cypress'
+                }
         }
         stage('Build'){
             steps{
@@ -63,6 +61,3 @@ pipeline {
     //     sh 'docker push $IMAGE_NAME:$IMAGE_VERSION'
     //   }
     // }
-
-    }
-}
