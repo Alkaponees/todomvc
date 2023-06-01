@@ -1,9 +1,9 @@
 pipeline {
-//     environment {
-//     GITHUB_TOKEN=credentials('github-token')
-//     IMAGE_NAME='ghcr.io/alkaponees/todomvc'
-//     IMAGE_VERSION='v1'
-//   }
+    environment {
+    GITHUB_TOKEN=credentials('github-token')
+    IMAGE_NAME='ghcr.io/alkaponees/todomvc'
+    IMAGE_VERSION='v1'
+  }
    agent any
     stages {
         stage('Work with Docker agent on node image'){
@@ -68,16 +68,12 @@ pipeline {
         }
         
         }
-    }
-}
-        
-       
-    //     stage ('Create docker conatiner')
-    //     {
-    //         steps{
-    //             sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
-    //         }
-    //     }    
+        stage ('Create docker image')
+        {
+            steps{
+                sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
+            }
+        }    
     //     stage('login to GHCR') {
     //   steps {
     //     sh 'echo $GITHUB_TOKEN_PSW | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin'
@@ -88,3 +84,9 @@ pipeline {
     //     sh 'docker push $IMAGE_NAME:$IMAGE_VERSION'
     //   }
     // }
+
+    }
+}
+        
+       
+    
