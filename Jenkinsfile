@@ -74,11 +74,11 @@ pipeline {
                 sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
             }
         }    
-    //     stage('login to GHCR') {
-    //   steps {
-    //     sh 'echo $GITHUB_TOKEN_PSW | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin'
-    //   }
-    // }
+        stage('login to GHCR') {
+      steps {
+        sh 'echo $GITHUB_TOKEN_PSW | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin'
+      }
+    }
     // stage('push image') {
     //   steps {
     //     sh 'docker push $IMAGE_NAME:$IMAGE_VERSION'
