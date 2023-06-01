@@ -79,11 +79,11 @@ pipeline {
         sh 'echo $GITHUB_TOKEN_PSW | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin'
       }
     }
-    // stage('push image') {
-    //   steps {
-    //     sh 'docker push $IMAGE_NAME:$IMAGE_VERSION'
-    //   }
-    // }
+    stage('push image') {
+      steps {
+        sh 'docker push $IMAGE_NAME:$IMAGE_VERSION'
+      }
+    }
 
     }
 }
