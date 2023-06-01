@@ -9,15 +9,30 @@ pipeline {
         stage('Work with Docker agent on node image'){
             agent {
             docker {
-                image 'node:14-alpine'
+                image 'ubuntu-latest'
                 args '-u root'
             }
         }
         stages{
-            stage('Install apk dependencies'){
+            stage('Install dependencies'){
                 steps {
-                sh 'apk update'
-                sh 'apk add xvfb'
+                sh 'apt-get update && apt-get install -y wget gnupg  git curl dirmngr apt-transport-https lsb-release ca-certificates'
+                sh 'curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -'
+                sh 'apt-get install nodejs'
+                sh 'node -v && npm -v'
+                sh 'apt-get update && apt-get install -y \
+                    libgtk2.0-0 \
+                    libgtk-3-0 \
+                    libgbm-dev \
+                    libnotify-dev \
+                    libgconf-2-4 \
+                    libnss3 \
+                    libxss1 \
+                    libasound2 \
+                    libxtst6 \
+                    xauth \
+                    xvfb \
+                    x11-xserver-utils'
               
             }
             }
