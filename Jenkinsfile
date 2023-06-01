@@ -21,6 +21,12 @@ pipeline {
               
             }
             }
+            stage ('Check network connection')
+            {
+                steps{
+                    sh 'ping -c www.google.com'
+                }
+            }
             stage('Install npm'){
                 steps{
                     sh 'npm install'
