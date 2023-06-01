@@ -6,7 +6,7 @@ pipeline {
   }
    agent any
     stages {
-        stage ('Install dependencies apk'){
+        stage ('Work with Docker agent on node image'){
             agent {
     docker {
         image 'node:14-alpine'
@@ -14,21 +14,16 @@ pipeline {
         reuseNode true
     }
         }
-        steps {
+        stages{
+            stage('Install apk dependencies'){
+                steps {
                 sh 'apk update'
                 sh 'apk add xvfb'
               
             }
-        }
-        stage ('Install npm')
-        {
-            agent {
-                docker {
-                    image 'node:14-alpine'
-                    args '-u root'
-                    reuseNode true
-                }
             }
+            stage ('Install npm')
+        {
             steps{
                 sh 'npm install'
                 sh 'npm install cypress'
@@ -36,31 +31,20 @@ pipeline {
             }
         }
         stage('Build'){
-            agent {
-                docker {
-                    image 'node:14-alpine'
-                    args '-u root'
-                    reuseNode true
-                }
-            }
             steps{
                 sh 'npm run build'
             }
         }
         stage ('Test')
         {
-            agent {
-                docker {
-                    image 'node:14-alpine'
-                    args '-u root'
-                    reuseNode true
-                }
-             }
             steps{
                 sh 'npm run cypress:run'
             }
         }
-            
+        }
+        
+        }
+        
        
     //     stage ('Create docker conatiner')
     //     {
