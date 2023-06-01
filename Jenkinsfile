@@ -47,6 +47,7 @@ pipeline {
         stage ('Test')
         {
             steps{
+                sh 'npm start'
                 sh 'npm run cypress:run'
             }
         }
