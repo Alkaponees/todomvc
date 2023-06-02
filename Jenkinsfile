@@ -6,8 +6,14 @@ pipeline {
   }
    agent any
     stages {
-        withDockerContainer('node:14') {
-            stages{
+        stage('Work with Docker agent on node image'){
+            agent {
+            docker {
+                image 'node:14'
+                args '-u root'
+            }
+        }
+        stages{
             stage('Install'){
                 steps {
                 sh 'apt-get update && apt-get install -y wget gnupg ca-certificates git'
@@ -44,9 +50,7 @@ pipeline {
         }
             
        
-    }    
-}
-        
+    }
 }
  stage ('Build')
         {
@@ -74,7 +78,7 @@ pipeline {
             sh 'kubectl apply -f k8s/ '
         }
     }
-}
-       
+    }
+}       
        
     
