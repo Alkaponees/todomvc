@@ -49,7 +49,10 @@ pipeline {
             }
         }
             
-        stage ('Build')
+       
+    }
+}
+ stage ('Build')
         {
             steps{
                 sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
@@ -75,8 +78,6 @@ pipeline {
             sh 'kubectl apply -f k8s/ '
         }
     }
-    }
-}
     }
 }       
        
