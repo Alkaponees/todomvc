@@ -17,8 +17,10 @@ pipeline {
             stage('Install '){
                 steps {\
                 sh 'apk update && apk add xvfb'
+                sh 'curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+                sh 'apk add --no-cache dpkg && dpkg -i google-chrome-stable_current_amd64.deb'
                 sh 'npm install'
-                sh 'npm install cypress'
+                sh 'npm install cypress --headless google-chrome-stable'
               
             }
             }
