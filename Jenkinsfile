@@ -15,7 +15,8 @@ pipeline {
         }
         stages{
             stage('Install '){
-                steps {
+                steps {\
+                sh 'apk update && apk add xvfb'
                 sh 'npm install'
                 sh 'npm install cypress'
               
