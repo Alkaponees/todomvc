@@ -17,6 +17,7 @@ pipeline {
             stage('Install '){
                 steps {\
                 sh 'apk update && apk add xvfb'
+                sh 'apk add --no-cache curl dbus udev ttf-freefont'
                 sh 'curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
                 sh 'apk add --no-cache dpkg && dpkg -i google-chrome-stable_current_amd64.deb'
                 sh 'npm install'
