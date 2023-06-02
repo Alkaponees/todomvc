@@ -84,7 +84,18 @@ pipeline {
         sh 'docker push $IMAGE_NAME:$IMAGE_VERSION'
       }
     }
-
+    stage ('Deploy')
+    {
+        agent{
+            kuber
+        }
+        steps{
+            sh 'git clone https://github.com/Alkaponees/todomvc.git'
+            sh 'cd todomvc'
+            sh 'minikube start --disk-size 10g --extra-config=apiserver.service-node-port-range=80-32767'
+            sh 'kubectl apply -f k8s/ '
+        }
+    }
     }
 }
         
