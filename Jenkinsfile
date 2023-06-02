@@ -19,7 +19,7 @@ pipeline {
                 sh 'apk update && apk add xvfb'
                 sh 'apk update && apk add --no-cache chromium'
                 sh 'npm install'
-                sh 'npm install cypress --headless chromium'
+                sh 'npm install cypress '
               
             }
             }
@@ -29,7 +29,7 @@ pipeline {
                 sh 'npm run build'
                 
                 sh 'npm run start&'
-                sh 'npm run cypress:run '
+                sh 'npm run cypress:run --headless chromium '
             }
         }
             
