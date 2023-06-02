@@ -86,9 +86,11 @@ pipeline {
     }
     stage ('Deploy')
     {
-        agent{
-            kuber
-        }
+       agent {
+                node {
+                    label 'kuber'
+                }
+            }
         steps{
             sh 'git clone https://github.com/Alkaponees/todomvc.git'
             sh 'cd todomvc'
