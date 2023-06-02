@@ -94,6 +94,7 @@ pipeline {
         steps{
             sh 'git clone https://github.com/Alkaponees/todomvc.git'
             sh 'cd todomvc'
+            sh 'minikube delete'
             sh 'minikube start --disk-size 10g --extra-config=apiserver.service-node-port-range=80-32767'
             sh 'kubectl apply -f k8s/ '
         }
