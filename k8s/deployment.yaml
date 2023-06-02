@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todomvc
+spec:
+  selector:
+    matchLabels:
+      app: todomvc
+  template:
+    metadata:
+      labels:
+        app: todomvc
+    spec:
+      containers:
+      - name: todomvc
+        image: ghcr.io/alkaponees/todomvc:v1
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "800m"
+        ports:
+        - containerPort: 8080
+
