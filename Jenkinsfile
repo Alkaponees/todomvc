@@ -2,11 +2,26 @@ pipeline {
     environment {
     GITHUB_TOKEN=credentials('github-token')
     IMAGE_NAME='ghcr.io/alkaponees/todomvc'
-    IMAGE_VERSION='v1'
   }
    agent any
     stages {
+        stage('Get Version') {
+            steps {
+                script {
+                    VERSION = input(
+                        id: 'versionInput',
+                        message: 'Enter the next version of package:',
+                        parameters: [
+                            string(name: 'VERSION', defaultValue: 'latest', description: 'Version')
+                        ]
+                    )
+                }
+            }
+        }
         stage('Work with Docker agent on node image'){
+            // when {
+            //     changeset 'origin/dev'
+            //     }
             agent {
             docker {
                 image 'node:14'
@@ -50,13 +65,13 @@ pipeline {
         stage ('Build')
         {
             steps{
-                sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION .'
+                sh 'docker build -t $IMAGE_NAME:$VERSION .'
             }
         }    
     stage('push') {
       steps {
         sh 'echo $GITHUB_TOKEN_PSW | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin'
-        sh 'docker push $IMAGE_NAME:$IMAGE_VERSION'
+        sh 'docker push $IMAGE_NAME:$VERSION'
       }
     }
     stage ('Deploy')
