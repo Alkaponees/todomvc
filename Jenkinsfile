@@ -13,8 +13,7 @@ pipeline {
             agent {
             docker {
                 image 'node:14'
-                registryCredentialsId 'docker-cloud'
-                cloud 'docker'
+                
             }
         }
         stages{
