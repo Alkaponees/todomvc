@@ -13,7 +13,7 @@ pipeline {
             //     }
             agent {
             docker {
-                image 'node:14'
+                image 'node:16'
                 args '-u root'
                 
             }
@@ -39,7 +39,7 @@ pipeline {
                     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
                     && apt-get update \
                     && apt-get install -y google-chrome-stable'    
-                sh 'rm yarn.lock && yarn install && npm install '
+                sh 'npm install '
                 sh 'npm install cypress'
             }
             }
