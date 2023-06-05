@@ -9,7 +9,7 @@ pipeline {
         stage('Work with Docker agent on node image'){
             agent {
             docker {
-                image 'node:14'
+                image 'node:16'
                 args '-u root'
             }
         }
