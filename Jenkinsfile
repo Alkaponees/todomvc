@@ -59,7 +59,7 @@ pipeline {
                     VERSION = input(
                         id: 'versionInput',
                         message: 'Enter the next version of package:',
-                        ok 'Proceed',
+                        ok: 'Proceed',
                         parameters: [
                             string(name: 'VERSION', defaultValue: 'latest', description: 'Version', trim: trues)
                         ]
