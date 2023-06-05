@@ -1,7 +1,8 @@
 pipeline {
     environment {
-    GITHUB_TOKEN=credentials('github-token')
-    IMAGE_NAME='ghcr.io/alkaponees/todomvc'
+    GITHUB_TOKEN    =   credentials('github-token')
+    IMAGE_NAME      =   'ghcr.io/alkaponees/todomvc'
+    VERSION         =   ''
     
   }
    agent any
@@ -58,12 +59,13 @@ pipeline {
                     VERSION = input(
                         id: 'versionInput',
                         message: 'Enter the next version of package:',
+                        ok 'Proceed',
                         parameters: [
-                            string(name: 'VERSION', defaultValue: 'latest', description: 'Version')
+                            string(name: 'VERSION', defaultValue: 'latest', description: 'Version', trim: trues)
                         ]
                     )
                 }
-                sh 'docker build -t $IMAGE_NAME:${VERSION} .'
+                sh 'docker build -t $IMAGE_NAME:${env.VERSION} .'
             }
         }    
     stage('push') {
