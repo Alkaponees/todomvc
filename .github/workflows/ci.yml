@@ -41,6 +41,8 @@ jobs:
         with:
           name: todomvc-build
           path: dist/bundle.js
+      - name: Print ref name
+        run: echo ${{ github.ref }}
       # - name: Login to GitHub Container Registry
       #   uses: docker/login-action@v1
       #   with:
@@ -55,52 +57,48 @@ jobs:
       #     push: true
       #     tags: ghcr.io/${{secrets.GPR_USERNAME}}/todomvc:${{ github.sha }}
 
-  deploy-dev:
-    name: Deploy to Development
-    runs-on: ubuntu-latest
-    needs: build
-    environment: "Development"
-    env:
-      tag: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Development' || '' }}
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.GPR_USERNAME }}
-          password: ${{ secrets.GPR_TOKEN}}
-      - name: Build and Push Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/${{secrets.GPR_USERNAME}}/container-test:$tags
+  # deploy-dev:
+  #   name: Deploy to Development
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   environment: "Development"
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   steps:
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v1
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ secrets.GPR_USERNAME }}
+  #         password: ${{ secrets.GPR_TOKEN}}
+  #     - name: Build and Push Image
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: .
+  #         file: ./Dockerfile
+  #         push: true
+  #         tags: ghcr.io/${{secrets.GPR_USERNAME}}/container-test:$tags-dev
 
-  deploy-stage:
-    name: Deploy to Staging
-    runs-on: ubuntu-latest
-    needs: build
-    environment: "Staging"
-    env:
-      tag: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'Staging' || '' }}
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.GPR_USERNAME }}
-          password: ${{ secrets.GPR_TOKEN}}
-      - name: Build and Push Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/${{secrets.GPR_USERNAME}}/container-test:$tags
+  # deploy-stage:
+  #   name: Deploy to Staging
+  #   runs-on: ubuntu-latest
+  #   needs: deploy-dev
+  #   environment: "Staging"
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   steps:
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v1
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ secrets.GPR_USERNAME }}
+  #         password: ${{ secrets.GPR_TOKEN}}
+  #     - name: Build and Push Image
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: .
+  #         file: ./Dockerfile
+  #         push: true
+  #         tags: ghcr.io/${{secrets.GPR_USERNAME}}/container-test:$tags-staging
