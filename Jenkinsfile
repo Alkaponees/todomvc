@@ -2,6 +2,7 @@ pipeline {
     environment {
     GITHUB_TOKEN=credentials('github-token')
     IMAGE_NAME='ghcr.io/alkaponees/todomvc'
+    VERSION=''
   }
    agent any
     stages {
