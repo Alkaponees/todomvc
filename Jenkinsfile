@@ -2,23 +2,10 @@ pipeline {
     environment {
     GITHUB_TOKEN=credentials('github-token')
     IMAGE_NAME='ghcr.io/alkaponees/todomvc'
-    VERSION=''
+    
   }
    agent any
     stages {
-        stage('Get Version') {
-            steps {
-                script {
-                    VERSION = input(
-                        id: 'versionInput',
-                        message: 'Enter the next version of package:',
-                        parameters: [
-                            string(name: 'VERSION', defaultValue: 'latest', description: 'Version')
-                        ]
-                    )
-                }
-            }
-        }
         stage('Work with Docker agent on node image'){
             // when {
             //     changeset 'origin/dev'
@@ -66,6 +53,15 @@ pipeline {
         stage ('Build')
         {
             steps{
+                script {
+                    VERSION = input(
+                        id: 'versionInput',
+                        message: 'Enter the next version of package:',
+                        parameters: [
+                            string(name: 'VERSION', defaultValue: 'latest', description: 'Version')
+                        ]
+                    )
+                }
                 sh 'docker build -t $IMAGE_NAME:${VERSION} .'
             }
         }    
@@ -75,18 +71,42 @@ pipeline {
         sh 'docker push $IMAGE_NAME:${VERSION}'
       }
     }
-    stage ('Deploy')
-    {
+    stage ('Deploy to Dev')
+    {   
+        when{
+            branch 'dev'
+        }
        agent {
                 node {
                     label 'kuber'
                 }
             }
         steps{
+            sh 'rm -rf dev && mkdir dev && cd dev'
             sh 'rm -rf todomvc && git clone https://github.com/Alkaponees/todomvc.git'
             sh 'cd todomvc'
             sh 'minikube start --disk-size 10g --extra-config=apiserver.service-node-port-range=80-32767'
-            sh 'kubectl apply -f k8s/ '
+            sh 'kubectl create namespace dev'
+            sh 'kubectl apply -f k8s/ --namespace=dev'
+        }
+    }
+    stage ('Deploy to stage')
+    {   
+        when{
+            branch 'stage'
+        }
+       agent {
+                node {
+                    label 'kuber'
+                }
+            }
+        steps{
+            sh 'rm -rf stage && mkdir stage && cd stage'
+            sh 'rm -rf todomvc && git clone https://github.com/Alkaponees/todomvc.git'
+            sh 'cd todomvc'
+            sh 'minikube start --disk-size 10g --extra-config=apiserver.service-node-port-range=80-32767'
+            sh 'kubectl create namespace stage'
+            sh 'kubectl apply -f k8s/ --namespace stage'
         }
     }
     }
