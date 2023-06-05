@@ -65,13 +65,13 @@ pipeline {
         stage ('Build')
         {
             steps{
-                sh 'docker build -t $IMAGE_NAME:$VERSION .'
+                sh 'docker build -t $IMAGE_NAME:${VERSION} .'
             }
         }    
     stage('push') {
       steps {
         sh 'echo $GITHUB_TOKEN_PSW | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin'
-        sh 'docker push $IMAGE_NAME:$VERSION'
+        sh 'docker push $IMAGE_NAME:${VERSION}'
       }
     }
     stage ('Deploy')
