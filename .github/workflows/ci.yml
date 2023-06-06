@@ -96,19 +96,24 @@ jobs:
       #     context: .
       #     push: true
       #     tags: ghcr.io/alkaponees/container-test:${{ steps.vers-development.outputs.version }}
-      - name: Install dependencies
-        run: npm install
-      - name: Publish to Stage
-        run: npm publish --access public  --tag dev
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: container-test
+          path: dist/bundle.js
+
+      - name: Publish to GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}" > .npmrc
+          echo "@alkaponees:registry=https://npm.pkg.github.com/" >> .npmrc
+          npm publish --access public --tag dev
 
 
 
   deploy-stage:
       name: Deploy to Staging
       runs-on: ubuntu-latest
-      needs: deploy-dev
+      needs: [build,deploy-dev]
       environment: "Staging"
       permissions:
         id-token: write
@@ -145,10 +150,15 @@ jobs:
       #     context: .
       #     push: true
       #     tags: ghcr.io/alkaponees/container-test:${{ steps.vers-staging.outputs.version }}
-      - name: Install dependencies
-        run: npm install
-      - name: Publish to Stage
-        run: npm publish --access public --name container-test --tag stage
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: container-test
+          path: path/to/download
+
+      - name: Publish to GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}" > .npmrc
+          echo "@alkaponees:registry=https://npm.pkg.github.com/" >> .npmrc
+          npm publish --access public --tag dev
 
