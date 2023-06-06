@@ -36,11 +36,15 @@ jobs:
           start: npm start
           run: npm run cypress:run
           browser: chrome
+      - name: versioning app
+        run: npm version prerelease --preid=ci-$GITHUB_RUN_ID --no-git-tag-version
+      - name: Package app
+        run: npm pack
       - name: Upload todomvc artifact
         uses: actions/upload-artifact@v3
         with:
           name: container-test
-          path: dist/bundle.js
+          path: "*.tgz"
       - name: Print ref name
         run: echo ${{ github.ref }}
       # - name: Login to GitHub Container Registry
@@ -61,6 +65,7 @@ jobs:
     name: Deploy to Development
     runs-on: ubuntu-latest
     needs: build
+    if: github.repository_owner == 'alkaponees'
     environment: "Development"
     permissions:
       id-token: write
@@ -77,11 +82,20 @@ jobs:
           format: "v${major}.${minor}.${patch}-development${increment}"
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: container-test
+
+      - uses: actions/setup-node@v1
         with:
           node-version: 14
           registry-url: https://npm.pkg.github.com/
+          scope: "@alkaponees"
+      - run: echo "registry=https://npm.pkg.github.com/@alkaponees" >> .npmrc
+      - run: npm publish $(ls *.tgz)
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GPR_PASSWORD}}
       # - name: Login to GitHub Container Registry
       #   uses: docker/login-action@v2
       #   with:
@@ -96,17 +110,7 @@ jobs:
       #     context: .
       #     push: true
       #     tags: ghcr.io/alkaponees/container-test:${{ steps.vers-development.outputs.version }}
-      # - name: Download Artifact
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: container-test
-      #     path: dist/bundle.js
-
-      # - name: Publish to GitHub Packages
-      #   run: |
-      #     echo "//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}" > .npmrc
-      #     echo "@alkaponees:registry=https://npm.pkg.github.com/" >> .npmrc
-      #     npm publish --access public --tag dev
+      
 
 
 
@@ -115,6 +119,7 @@ jobs:
   #     runs-on: ubuntu-latest
   #     needs: [build,deploy-dev]
   #     environment: "Staging"
+  #     if: github.repository_owner == 'alkaponees'
   #     permissions:
   #       id-token: write
   #       contents: read
@@ -150,15 +155,3 @@ jobs:
   #     #     context: .
   #     #     push: true
   #     #     tags: ghcr.io/alkaponees/container-test:${{ steps.vers-staging.outputs.version }}
-  #     - name: Download Artifact
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: container-test
-  #         path: path/to/download
-
-  #     - name: Publish to GitHub Packages
-  #       run: |
-  #         echo "//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}" > .npmrc
-  #         echo "@alkaponees:registry=https://npm.pkg.github.com/" >> .npmrc
-  #         npm publish --access public --tag dev
-
