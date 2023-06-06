@@ -1,12 +1,5 @@
 {
-  "name": "@alkaponees/todomvc",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alkaponees/todomvc.git"
-  },
-  "publishConfig": {
-    "@alkaponees:registry": "https://npm.pkg.github.com"
-  },
+  "name": "rollup-todomvc",
   "author": "Cypress DX Team",
   "license": "MIT",
   "scripts": {
