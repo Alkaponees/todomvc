@@ -39,7 +39,7 @@ jobs:
       - name: Upload todomvc artifact
         uses: actions/upload-artifact@v3
         with:
-          name: todomvc-build
+          name: container-test
           path: dist/bundle.js
       - name: Print ref name
         run: echo ${{ github.ref }}
@@ -96,17 +96,17 @@ jobs:
       #     context: .
       #     push: true
       #     tags: ghcr.io/alkaponees/container-test:${{ steps.vers-development.outputs.version }}
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: container-test
-          path: dist/bundle.js
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: container-test
+      #     path: dist/bundle.js
 
-      - name: Publish to GitHub Packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}" > .npmrc
-          echo "@alkaponees:registry=https://npm.pkg.github.com/" >> .npmrc
-          npm publish --access public --tag dev
+      # - name: Publish to GitHub Packages
+      #   run: |
+      #     echo "//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}" > .npmrc
+      #     echo "@alkaponees:registry=https://npm.pkg.github.com/" >> .npmrc
+      #     npm publish --access public --tag dev
 
 
 
