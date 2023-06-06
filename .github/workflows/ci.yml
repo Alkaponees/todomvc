@@ -75,7 +75,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{secrets.GPR_USERNAME}}
           password: ${{secrets.GPR_PASSWORD}}
       - name: Set up Docker Buildx
@@ -85,7 +85,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: docker.pkg.github.com/todomvc/container-test:${{ steps.vers-development.outputs.version }}
+          tags: ghcr.io/alkaponees/container-test:${{ steps.vers-development.outputs.version }}
 
 
 
