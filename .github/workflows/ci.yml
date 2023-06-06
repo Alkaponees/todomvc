@@ -85,7 +85,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: docker.pkg.github.com/alkaponees/container-test:${{ steps.vers-development.outputs.version }}
+          tags: docker.pkg.github.com/todomvc/container-test:${{ steps.vers-development.outputs.version }}
 
 
 
