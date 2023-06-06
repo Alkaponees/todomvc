@@ -99,7 +99,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Publish to Stage
-        run: npm publish --access public --name container-test --tag ${{ steps.vers-staging.outputs.version }}
+        run: npm publish --access public --name container-test --tag dev
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
