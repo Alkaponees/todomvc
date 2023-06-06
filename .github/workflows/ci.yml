@@ -83,7 +83,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: docker.pkg.github.com/${{ github.repository }}/container-test:${{ steps.vers-development.outputs.version }}
+          tags: docker.pkg.github.com/alkaponees/todomvc/container-test:${{ steps.vers-development.outputs.version }}
   #   name: Deploy to Development
   #   runs-on: ubuntu-latest
   #   needs: build
