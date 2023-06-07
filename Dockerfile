@@ -1,4 +1,5 @@
 FROM node:14
+LABEL org.opencontainers.image.source="https://github.com/Alkaponees/todomvc"
 # Install dependencies
 RUN apt-get update && apt-get install -y wget gnupg ca-certificates git
 RUN apt-get update && apt-get install -y \
