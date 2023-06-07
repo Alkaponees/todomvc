@@ -56,7 +56,15 @@ jobs:
       id-token: write
       contents: read
     steps:
-
+      - name: Semantic versioning
+        id: vers-development
+        uses: PaulHatch/semantic-version@v4.0.2
+        with:
+          branch: main
+          tag_prefix: "v."
+          major_pattern: "BREAKING CHANGE:"
+          minor_pattern: "feat:"
+          format: "v.${major}.${minor}.${patch}-development${increment}"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Login to GitHub Container Registry
@@ -70,9 +78,8 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ghcr.io/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=sha
+          tags: ${{ steps.vers-development.outputs.version }}
+            
       - name: Build and Push Image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
