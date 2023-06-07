@@ -85,49 +85,48 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/alkaponees/container-test:${{ steps.vers-development.outputs.version }}
+          tags: ghcr.io/alkaponees/todomvc:container-test${{ steps.vers-development.outputs.version }}
           labels: https://github.com/Alkaponees/todomvc
 
 
 
-  deploy-stage:
-      name: Deploy to Staging
-      runs-on: ubuntu-latest
-      needs: [build,deploy-dev]
-      environment: "Staging"
-      if: github.repository_owner == 'alkaponees'
-      permissions:
-        id-token: write
-        contents: read
-      steps:
-      - name: Semantic versioning
-        id: vers-staging
-        uses: PaulHatch/semantic-version@v4.0.2
-        with:
-          branch: main
-          tag_prefix: "v"
-          major_pattern: "BREAKING CHANGE:"
-          minor_pattern: "feat:"
-          format: "v${major}.${minor}.${patch}-staging${increment}"
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{secrets.GPR_USERNAME}}
-          password: ${{secrets.GPR_PASSWORD}}
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
-          registry-url: https://npm.pkg.github.com/
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Build and Push Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/alkaponees/container-test:${{ steps.vers-staging.outputs.version }}
-          labels: https://github.com/Alkaponees/todomvc
+  # deploy-stage:
+  #     name: Deploy to Staging
+  #     runs-on: ubuntu-latest
+  #     needs: [deploy-dev]
+  #     environment: "Staging"
+  #     permissions:
+  #       id-token: write
+  #       contents: read
+  #     steps:
+  #     - name: Semantic versioning
+  #       id: vers-staging
+  #       uses: PaulHatch/semantic-version@v4.0.2
+  #       with:
+  #         branch: main
+  #         tag_prefix: "v"
+  #         major_pattern: "BREAKING CHANGE:"
+  #         minor_pattern: "feat:"
+  #         format: "v${major}.${minor}.${patch}-staging${increment}"
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{secrets.GPR_USERNAME}}
+  #         password: ${{secrets.GPR_PASSWORD}}
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 14
+  #         registry-url: https://npm.pkg.github.com/
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+  #     - name: Build and Push Image
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: .
+  #         push: true
+  #         tags: ghcr.io/alkaponees/container-test:${{ steps.vers-staging.outputs.version }}
+  #         labels: https://github.com/Alkaponees/todomvc
